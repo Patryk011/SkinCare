@@ -4,7 +4,7 @@ import { View, Text, Button, StyleSheet } from "react-native";
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Witaj w aplikacji do pielęgnacji skóry</Text>
+      <Text style={styles.title}>SkinCare App</Text>
       <View style={styles.buttonContainer}>
         <Button
           title="Zaloguj się"
@@ -28,16 +28,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f0f0",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    paddingBottom: 250,
   },
   buttonContainer: {
     marginVertical: 10,
     width: "80%",
+    borderRadius: 20,
+    overflow: "hidden",
   },
 });
 

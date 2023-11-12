@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Alert } from "react-native";
+import { View, TextInput, Button, Alert, StyleSheet, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RegisterScreen = ({ navigation }) => {
@@ -18,21 +18,58 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Rejestracja</Text>
       <TextInput
+        style={styles.input}
         placeholder="Nazwa użytkownika"
         value={username}
         onChangeText={setUsername}
+        placeholderTextColor="#666"
       />
       <TextInput
+        style={styles.input}
         placeholder="Hasło"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        placeholderTextColor="#666"
       />
-      <Button title="Zarejestruj" onPress={handleRegister} />
+      <View style={styles.buttonContainer}>
+        <Button title="Zarejestruj" onPress={handleRegister} color="#007bff" />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 30,
+    color: "#333",
+  },
+  input: {
+    width: "80%",
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+  },
+  buttonContainer: {
+    width: "80%",
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+});
 
 export default RegisterScreen;
