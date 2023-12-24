@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Alert, StyleSheet, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { registerUser, isUserExists } from "../data/api";
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
-    try {
-      const userData = JSON.stringify({ username, password });
-      await AsyncStorage.setItem(username, userData);
+    const userExists = await isUserExists(username);
+    if (userExists) {
+      Alert.alert("Błąd", "Użytkownik już istnieje");
+      return;
+    }
+
+    const result = await registerUser(username, password);
+    if (result) {
       Alert.alert("Sukces", "Rejestracja zakończona pomyślnie");
-      navigation.goBack();
-    } catch (error) {
+      navigation.navigate("Login");
+    } else {
       Alert.alert("Błąd", "Nie udało się stworzyć konta");
     }
   };

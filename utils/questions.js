@@ -26,3 +26,5 @@ const questions = [
   },
   { id: 20, text: "Czy masz często uczucie gorąca na skórze twarzy?" },
 ];
+
+export default questions;

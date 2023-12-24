@@ -15,7 +15,7 @@ const SkinTestScreen = ({ navigation }) => {
     if (nextQuestion < questions.length) {
       setCurrentQuestionIndex(nextQuestion);
     } else {
-      navigation.navigate("TestResultScreen", { answers });
+      navigation.navigate("TestResult", { answers });
     }
   };
 

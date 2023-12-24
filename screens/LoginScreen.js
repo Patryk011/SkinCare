@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   TextInput,
@@ -8,27 +8,21 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loginUser } from "../data/api";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async () => {
-    try {
-      const userData = await AsyncStorage.getItem(username);
-      if (userData !== null) {
-        const user = JSON.parse(userData);
-        if (user.password === password) {
-          navigation.navigate("Home");
-        } else {
-          Alert.alert("Błąd", "Nieprawidłowe hasło");
-        }
-      } else {
-        Alert.alert("Błąd", "Użytkownik nie istnieje");
-      }
-    } catch (error) {
-      Alert.alert("Błąd", "Nie udało się zalogować");
+    const result = await loginUser(username, password);
+    if (result.success) {
+      login(result.user);
+      navigation.navigate("Home");
+    } else {
+      Alert.alert("Błąd", "Nieprawidłowe dane logowania");
     }
   };
 
