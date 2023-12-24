@@ -2,9 +2,9 @@ import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "../components/HomeScreen";
-import LoginScreen from "../components/LoginScreen";
-import RegisterScreen from "../components/RegisterScreen";
+import HomeScreen from "../screens/HomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
