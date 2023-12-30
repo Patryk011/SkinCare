@@ -1,62 +1,12 @@
-import React, { useContext } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import { AuthContext } from "../contexts/AuthContext";
+import React from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
+// import { AuthContext } from "../contexts/AuthContext";
 
-const HomeScreen = ({ navigation }) => {
-  const { user } = useContext(AuthContext);
-
+const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SkinCare App</Text>
-      {user ? (
-        <>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Notatnik"
-              onPress={() => navigation.navigate("Notebook")}
-              color="#007bff"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Aparat"
-              onPress={() => navigation.navigate("Camera")}
-              color="#28a745"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Sklepy"
-              onPress={() => navigation.navigate("Shops")}
-              color="#007bff"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Test na Typ Skóry"
-              onPress={() => navigation.navigate("SkinTest")}
-              color="#28a745"
-            />
-          </View>
-        </>
-      ) : (
-        <>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Zaloguj się"
-              onPress={() => navigation.navigate("Login")}
-              color="#007bff"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Zarejestruj się"
-              onPress={() => navigation.navigate("Register")}
-              color="#28a745"
-            />
-          </View>
-        </>
-      )}
+      <Text style={styles.title}>Witaj w SkinCare App</Text>
+      <Text style={styles.subtitle}>Twoje centrum pielęgnacji skóry</Text>
     </View>
   );
 };
@@ -66,18 +16,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
+    padding: 20,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    paddingBottom: 20,
+    color: "#333",
   },
-  buttonContainer: {
-    marginVertical: 10,
-    width: "80%",
-    borderRadius: 20,
-    overflow: "hidden",
+  subtitle: {
+    fontSize: 18,
+    color: "#666",
+    marginBottom: 20,
   },
 });
 
