@@ -3,6 +3,16 @@ import { View, Text, StyleSheet } from "react-native";
 import questions from "../utils/questions";
 
 const TestResultScreen = ({ route }) => {
+  if (route.params === undefined) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Aby uzyskać wynik testu na typ skóry najpierw musisz odpowiedzieć na
+          pytania.
+        </Text>
+      </View>
+    );
+  }
   const { answers } = route.params;
 
   const analyzeResult = (answers) => {
@@ -53,6 +63,11 @@ const styles = StyleSheet.create({
   recommendation: {
     fontSize: 18,
     marginTop: 20,
+  },
+
+  message: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 

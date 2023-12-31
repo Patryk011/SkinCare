@@ -7,7 +7,9 @@ const WelcomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome, please Log in or Register</Text>
+      <Text style={styles.title}>
+        Witaj, zarejestruj się lub jeśli masz konto zaloguj.
+      </Text>
       {!user && (
         <>
           <View style={styles.buttonContainer}>

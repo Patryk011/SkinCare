@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Button, StyleSheet, Alert } from "react-native";
+import { View, Button, StyleSheet, Alert, Text } from "react-native";
 import { Camera } from "expo-camera";
 
 const CameraScreen = ({ navigation }) => {
