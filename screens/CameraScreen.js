@@ -27,7 +27,11 @@ const CameraScreen = ({ navigation }) => {
   }
 
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <Text style={{ textAlign: "center", marginTop: 300, fontWeight: "bold" }}>
+        No access to camera
+      </Text>
+    );
   }
 
   return (
@@ -52,6 +56,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 20,
     justifyContent: "center",
+  },
+
+  text: {
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+    margin: "0 auto",
   },
 });
 
