@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-// import { AuthContext } from "../contexts/AuthContext";
+import { getUserData } from "../data/api";
+import { AuthContext } from "../contexts/AuthContext";
 
 const HomeScreen = () => {
+  const [userData, setUserData] = useState(null);
+  const { user } = useContext(AuthContext);
+
+  const userId = user ? user.id : null;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getUserData(userId);
+
+      console.log("data: " + data);
+      if (data) {
+        setUserData(data);
+      }
+    };
+
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Witaj w SkinCare App</Text>
+      {userData && (
+        <Text style={styles.title}>
+          Witaj {userData.username} w SkinCare App
+        </Text>
+      )}
       <Text style={styles.subtitle}>Twoje centrum pielęgnacji skóry</Text>
     </View>
   );

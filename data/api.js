@@ -1,4 +1,4 @@
-const API_URL = "http://10.0.2.2:3000";
+const API_URL = "http://localhost:3000";
 
 export const isUserExists = async (username) => {
   try {
@@ -16,6 +16,7 @@ export const registerUser = async (username, password) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
@@ -28,6 +29,7 @@ export const registerUser = async (username, password) => {
 export const loginUser = async (username, password) => {
   try {
     const response = await fetch(`${API_URL}/users?username=${username}`);
+
     const users = await response.json();
     if (users.length > 0) {
       const user = users[0];
@@ -39,5 +41,15 @@ export const loginUser = async (username, password) => {
   } catch (error) {
     console.error("Error during login:", error);
     return { success: false };
+  }
+};
+
+export const getUserData = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}`);
+    const userData = await response.json();
+    return userData;
+  } catch (error) {
+    console.error("Error during fetching user data:", error);
   }
 };
