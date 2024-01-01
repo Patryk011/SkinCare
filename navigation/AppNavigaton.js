@@ -18,7 +18,11 @@ const Stack = createStackNavigator();
 
 function HomeStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
   );
@@ -56,7 +60,7 @@ export function AppNavigation() {
         <Drawer.Screen
           name="AuthStack"
           component={AuthStack}
-          options={{ title: "Welcome" }}
+          options={{ headerShown: false }}
         />
       )}
     </Drawer.Navigator>
