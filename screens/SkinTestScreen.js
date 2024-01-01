@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import questions from "../utils/questions";
 
 const SkinTestScreen = ({ navigation }) => {
@@ -24,8 +24,20 @@ const SkinTestScreen = ({ navigation }) => {
       <Text style={styles.question}>
         {questions[currentQuestionIndex].text}
       </Text>
-      <Button title="Tak" onPress={() => handleAnswer(true)} />
-      <Button title="Nie" onPress={() => handleAnswer(false)} />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonYes}
+          onPress={() => handleAnswer(true)}
+        >
+          <Text style={styles.buttonText}>Tak</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonNo}
+          onPress={() => handleAnswer(false)}
+        >
+          <Text style={styles.buttonText}>Nie</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -40,6 +52,32 @@ const styles = StyleSheet.create({
   question: {
     fontSize: 18,
     marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+  },
+  buttonYes: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 15,
+    width: 100,
+    alignItems: "center",
+  },
+
+  buttonNo: {
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 15,
+    width: 100,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });
 

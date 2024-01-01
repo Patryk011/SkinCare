@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderTopColor: "#f4f4f4",
     borderTopWidth: 1,
-    marginTop: "auto", // Kluczowe dla umieszczenia na dole
+    marginTop: "auto",
   },
   separator: {
     borderTopWidth: 1,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   logoutLabel: {
-    color: "red", // Czerwony kolor dla etykiety 'Logout'
+    color: "red",
   },
 });
 
