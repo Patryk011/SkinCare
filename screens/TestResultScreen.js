@@ -1,15 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import questions from "../utils/questions";
 
-const TestResultScreen = ({ route }) => {
-  if (route.params === undefined) {
+const TestResultScreen = ({ route, navigation }) => {
+  if (route.params === undefined || !route.params.answers) {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>
-          Aby uzyskać wynik testu na typ skóry najpierw musisz odpowiedzieć na
+          Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
           pytania.
         </Text>
+        <Button
+          title="Rozpocznij Test Skóry"
+          onPress={() => navigation.navigate("SkinTest")}
+        />
       </View>
     );
   }
@@ -44,7 +48,13 @@ const TestResultScreen = ({ route }) => {
 
   const saveResult = async () => {
     if (user && user.id) {
-      await updateUser(user.id, { skinType: result });
+      const userData = await getUserData(user.id);
+      if (!userData) {
+        alert("Nie znaleziono danych użytkownika");
+        return;
+      }
+
+      await updateUser(user.id, { ...userData, skinType: result });
       alert("Wynik testu został zapisany w Twoim profilu.");
     }
   };
@@ -79,6 +89,7 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 30,
   },
 });
 

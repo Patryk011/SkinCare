@@ -55,6 +55,24 @@ const UserProfileScreen = () => {
     }
   };
 
+  const resetSkinTypeTest = async () => {
+    try {
+      const userData = await getUserData(userId);
+
+      if (!userData) {
+        alert("Nie znaleziono danych użytkownika");
+        return;
+      }
+
+      await updateUser(userId, { ...userData, skinType: null });
+      setSkinType(null);
+      alert("Wynik testu na typ skóry został zresetowany.");
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Nie udało się zresetować wyniku testu na typ skóry");
+    }
+  };
+
   const updateUsername = async () => {
     try {
       const userExists = await isUserExists(newUsername);
@@ -121,6 +139,21 @@ const UserProfileScreen = () => {
         onPress={handleChangePassword}
         color="#28a745"
       />
+      {skinType ? (
+        <View>
+          <Text style={styles.skinSection}>{`Typ skóry: ${skinType}`}</Text>
+          <TouchableOpacity
+            style={styles.resetButton}
+            onPress={resetSkinTypeTest}
+          >
+            <Text style={styles.resetButtonText}>Resetuj Test Skóry</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <Text style={styles.skinSection}>
+          Musisz najpierw wypełnić test na typ skóry, aby otrzymać wynik.
+        </Text>
+      )}
     </View>
   );
 };
@@ -157,6 +190,28 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  skinSection: {
+    fontSize: 18,
+    color: "#666",
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    textAlign: "center",
+  },
+  resetButton: {
+    marginTop: 10,
+    backgroundColor: "#ff6347",
+    padding: 10,
+    borderRadius: 10,
+  },
+  resetButtonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
 
