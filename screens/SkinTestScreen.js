@@ -1,10 +1,29 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import { AuthContext } from "../contexts/AuthContext";
 import questions from "../utils/questions";
 
 const SkinTestScreen = ({ navigation }) => {
+  const { user } = useContext(AuthContext);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
+
+  const [endView, setEndView] = useState(false);
+
+  useEffect(() => {
+    if (user.skinType) {
+      setEndView(true);
+    } else {
+      setEndView(false);
+    }
+  }, [user.skinType]);
+
+  const resetTest = () => {
+    setCurrentQuestionIndex(0);
+    setAnswers([]);
+    setEndView(false);
+  };
 
   const handleAnswer = (answer) => {
     const nextQuestion = currentQuestionIndex + 1;
@@ -16,8 +35,24 @@ const SkinTestScreen = ({ navigation }) => {
       setCurrentQuestionIndex(nextQuestion);
     } else {
       navigation.navigate("TestResult", { answers });
+      setEndView(true);
     }
   };
+
+  if (endView) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Test na typ skóry został zakończony. Sprawdź wyniki w swoim profilu.
+        </Text>
+        <Button
+          title="Wróć do profilu"
+          onPress={() => navigation.navigate("Profile")}
+        />
+        <Button title="Resetuj Test" onPress={resetTest} color="#ff6347" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -59,7 +94,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   buttonYes: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#32CD32",
     padding: 10,
     borderRadius: 5,
     marginRight: 15,

@@ -2,8 +2,9 @@
   "users": [
     {
       "username": "test",
-      "password": "test22",
-      "id": 1
+      "password": "test",
+      "id": 1,
+      "skinType": "Twoja skóra wydaje się być typu normalnego."
     },
     {
       "username": "test2",

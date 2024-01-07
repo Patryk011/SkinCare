@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { getUserData, updateUser, isUserExists } from "../data/api";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 
 const UserProfileScreen = () => {
@@ -8,7 +15,6 @@ const UserProfileScreen = () => {
   const userId = user ? user.id : null;
 
   const [username, setUsername] = useState("");
-  const [skinType, setSkinType] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -23,7 +29,6 @@ const UserProfileScreen = () => {
       const data = await getUserData(userId);
       if (data) {
         setUsername(data.username);
-        setSkinType(data.skinType);
       }
     };
     fetchUserData();
@@ -52,24 +57,6 @@ const UserProfileScreen = () => {
     } catch (err) {
       console.error("Error:", err);
       alert("Nie udało się zmienić hasła");
-    }
-  };
-
-  const resetSkinTypeTest = async () => {
-    try {
-      const userData = await getUserData(userId);
-
-      if (!userData) {
-        alert("Nie znaleziono danych użytkownika");
-        return;
-      }
-
-      await updateUser(userId, { ...userData, skinType: null });
-      setSkinType(null);
-      alert("Wynik testu na typ skóry został zresetowany.");
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Nie udało się zresetować wyniku testu na typ skóry");
     }
   };
 
@@ -139,15 +126,11 @@ const UserProfileScreen = () => {
         onPress={handleChangePassword}
         color="#28a745"
       />
-      {skinType ? (
+      {user.skinType ? (
         <View>
-          <Text style={styles.skinSection}>{`Typ skóry: ${skinType}`}</Text>
-          <TouchableOpacity
-            style={styles.resetButton}
-            onPress={resetSkinTypeTest}
-          >
-            <Text style={styles.resetButtonText}>Resetuj Test Skóry</Text>
-          </TouchableOpacity>
+          <Text
+            style={styles.skinSection}
+          >{`Typ skóry: ${user.skinType}`}</Text>
         </View>
       ) : (
         <Text style={styles.skinSection}>

@@ -1,23 +1,12 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import questions from "../utils/questions";
+import { AuthContext } from "../contexts/AuthContext";
+import { getUserData, updateUser } from "../data/api";
 
 const TestResultScreen = ({ route, navigation }) => {
-  if (route.params === undefined || !route.params.answers) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
-          pytania.
-        </Text>
-        <Button
-          title="Rozpocznij Test Skóry"
-          onPress={() => navigation.navigate("SkinTest")}
-        />
-      </View>
-    );
-  }
-  const { answers } = route.params;
+  const { user, updateUserState } = useContext(AuthContext);
+  const [result, setResult] = useState("");
 
   const analyzeResult = (answers) => {
     let dryScore = 0;
@@ -44,24 +33,51 @@ const TestResultScreen = ({ route, navigation }) => {
       : "Twoja skóra wydaje się być typu normalnego.";
   };
 
-  const result = analyzeResult(answers);
-
-  const saveResult = async () => {
-    if (user && user.id) {
-      const userData = await getUserData(user.id);
-      if (!userData) {
-        alert("Nie znaleziono danych użytkownika");
-        return;
-      }
-
-      await updateUser(user.id, { ...userData, skinType: result });
-      alert("Wynik testu został zapisany w Twoim profilu.");
-    }
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     saveResult();
   }, [result]);
+
+  const saveResult = async () => {
+    if (user && user.id && result) {
+      const userData = await getUserData(user.id);
+      if (userData) {
+        await updateUser(user.id, { ...userData, skinType: result });
+
+        updateUserState({ ...user, skinType: result });
+      }
+    }
+  };
+  useEffect(() => {
+    if (route.params?.answers) {
+      const calculatedResult = analyzeResult(route.params.answers);
+      setResult(calculatedResult);
+    }
+    console.log("wynik: " + result);
+  }, [route.params?.answers]);
+
+  if (user.skinType) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.result}>Wynik testu:</Text>
+        <Text style={styles.recommendation}>{user.skinType}</Text>
+      </View>
+    );
+  }
+
+  if (!route.params?.answers) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
+          pytania.
+        </Text>
+        <Button
+          title="Rozpocznij Test Skóry"
+          onPress={() => navigation.navigate("SkinTest")}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
