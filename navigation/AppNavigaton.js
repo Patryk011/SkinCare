@@ -13,6 +13,7 @@ import CameraScreen from "../screens/CameraScreen";
 import ShopScreen from "../screens/ShopScreen";
 import SkinTestScreen from "../screens/SkinTestScreen";
 import TestResultScreen from "../screens/TestResultScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -46,6 +47,20 @@ export function AppNavigation() {
               title: "Home",
               drawerIcon: ({ color }) => (
                 <Ionicons name="home-outline" size={20} color={color} />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Profile"
+            component={UserProfileScreen}
+            options={{
+              title: "Profile",
+              drawerIcon: ({ color }) => (
+                <Ionicons
+                  name="person-circle-outline"
+                  size={20}
+                  color={color}
+                />
               ),
             }}
           />

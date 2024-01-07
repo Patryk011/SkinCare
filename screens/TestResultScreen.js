@@ -42,6 +42,17 @@ const TestResultScreen = ({ route }) => {
 
   const result = analyzeResult(answers);
 
+  const saveResult = async () => {
+    if (user && user.id) {
+      await updateUser(user.id, { skinType: result });
+      alert("Wynik testu został zapisany w Twoim profilu.");
+    }
+  };
+
+  React.useEffect(() => {
+    saveResult();
+  }, [result]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.result}>Wynik testu:</Text>

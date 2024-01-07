@@ -52,3 +52,18 @@ export const getUserData = async (userId) => {
     console.error("Error during fetching user data:", error);
   }
 };
+
+export const updateUser = async (userId, updates) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error during updating user data:", error);
+  }
+};
