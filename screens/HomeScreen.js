@@ -31,7 +31,9 @@ const HomeScreen = () => {
           Witaj {userData.username} w SkinCare App
         </Text>
       )}
-      <Text style={styles.subtitle}>Twoje centrum pielęgnacji skóry</Text>
+      <Text style={[styles.subtitle, styles.underline]}>
+        Twoje centrum pielęgnacji skóry
+      </Text>
     </View>
   );
 };
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#FCEFEF", 
     padding: 20,
   },
   logo: {
@@ -58,6 +60,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#666",
     marginBottom: 20,
+  },
+  underline: {
+    textDecorationLine: "underline",
   },
 });
 
