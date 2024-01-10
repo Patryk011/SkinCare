@@ -29,7 +29,12 @@ const NotebookScreen = ({ navigation }) => {
   }, []);
 
   const handleSaveNote = async () => {
-    const newNotesList = [...notesList, note];
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString();
+
+    const newNote = `${formattedDate}: ${note}`;
+    const newNotesList = [...notesList, newNote];
+
     try {
       await AsyncStorage.setItem("notes", JSON.stringify(newNotesList));
       setNotesList(newNotesList);
