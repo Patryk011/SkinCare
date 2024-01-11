@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import questions from "../utils/questions";
+import { View, Text, StyleSheet } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import { getUserData, updateUser } from "../data/api";
 
@@ -13,7 +12,6 @@ const TestResultScreen = ({ route, navigation }) => {
     let oilyScore = 0;
 
     const drySkinQuestionId = [2, 4, 6, 8, 10];
-
     const oilySkinQuestionId = [1, 3, 6, 19];
 
     answers.forEach((answer) => {
@@ -42,11 +40,11 @@ const TestResultScreen = ({ route, navigation }) => {
       const userData = await getUserData(user.id);
       if (userData) {
         await updateUser(user.id, { ...userData, skinType: result });
-
         updateUserState({ ...user, skinType: result });
       }
     }
   };
+
   useEffect(() => {
     if (route.params?.answers) {
       const calculatedResult = analyzeResult(route.params.answers);
@@ -56,56 +54,99 @@ const TestResultScreen = ({ route, navigation }) => {
   }, [route.params?.answers]);
 
   if (user.skinType) {
+    let recommendationsTitle = "";
+    let recommendationsList = [];
+    let additionalInfo = "";
+
+    switch (user.skinType) {
+      case "Twoja skóra może być typu suchego.":
+        recommendationsTitle = "Nasze zalecenia:";
+        recommendationsList = [
+          "Delikatne oczyszczanie.",
+          "Nawilżanie.",
+          "Unikaj drażniących składników.",
+          "Regularne peelingi.",
+        ];
+        additionalInfo =
+          "Chcesz dowiedzieć się z jakich produktów korzystać odwiedź nasz sklep i śledź zmiany w notatniku.";
+        break;
+
+      case "Twoja skóra może być typu tłustego.":
+        recommendationsTitle = "Nasze zalecenia:";
+        recommendationsList = [
+          "Regularne oczyszczanie.",
+          "Matujące kremy.",
+          "Maseczki oczyszczające.",
+        ];
+        additionalInfo =
+          "Chcesz dowiedzieć się z jakich produktów korzystać odwiedź nasz sklep i śledź zmiany w notatniku.";
+        break;
+
+      case "Twoja skóra wydaje się być typu normalnego.":
+        recommendationsTitle = "Nasze zalecenia:";
+        recommendationsList = [
+          "Delikatne oczyszczanie.",
+          "Utrzymywanie nawilżenia.",
+          "Ochrona przeciwsłoneczna.",
+          "Zrównoważona dieta i picie wody.",
+        ];
+        additionalInfo =
+          "Chcesz dowiedzieć się z jakich produktów korzystać odwiedź nasz sklep i śledź zmiany w notatniku.";
+        break;
+
+      default:
+        break;
+    }
+
     return (
       <View style={styles.container}>
         <Text style={styles.result}>Wynik testu:</Text>
         <Text style={styles.recommendation}>{user.skinType}</Text>
+        <Text style={styles.recommendationTitle}>{recommendationsTitle}</Text>
+        <View>
+          {recommendationsList.map((recommendation, index) => (
+            <Text key={index} style={styles.recommendationItem}>
+              • {recommendation}
+            </Text>
+          ))}
+        </View>
+        <Text style={styles.additionalInfo}>{additionalInfo}</Text>
       </View>
     );
   }
 
-  if (!route.params?.answers) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
-          pytania.
-        </Text>
-        <Button
-          title="Rozpocznij Test Skóry"
-          onPress={() => navigation.navigate("SkinTest")}
-        />
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.result}>Wynik testu:</Text>
-      <Text style={styles.recommendation}>{result}</Text>
-    </View>
-  );
+  return null; // Jeżeli user.skinType jest falsy, nic nie renderujemy
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   result: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 10,
   },
   recommendation: {
     fontSize: 18,
-    marginTop: 20,
+    marginBottom: 20,
   },
-
-  message: {
+  recommendationTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 30,
+    marginBottom: 10,
+  },
+  recommendationItem: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  additionalInfo: {
+    fontSize: 14,
+    marginTop: 20,
+    fontStyle: "italic",
   },
 });
 

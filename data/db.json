@@ -10,6 +10,12 @@
       "username": "test2",
       "password": "test2",
       "id": 2
+    },
+    {
+      "id": "c778",
+      "username": "kernel",
+      "password": "kernel",
+      "skinType": "Twoja skóra może być typu suchego."
     }
   ]
 }
