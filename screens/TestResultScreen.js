@@ -123,7 +123,20 @@ const TestResultScreen = ({ route, navigation }) => {
     );
   }
 
-  return null; // Zwracamy null tylko w przypadku braku user.skinType
+  if (!route.params?.answers || !user.skinType) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
+          pytania.
+        </Text>
+        <Button
+          title="Rozpocznij Test Skóry"
+          onPress={() => navigation.navigate("SkinTest")}
+        />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
