@@ -30,6 +30,20 @@ function HomeStack() {
   );
 }
 
+function AuthStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export function AppNavigation() {
   const { user } = useContext(AuthContext);
 
@@ -121,16 +135,4 @@ export function AppNavigation() {
   );
 }
 
-function AuthStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-    </Stack.Navigator>
-  );
-}
+
