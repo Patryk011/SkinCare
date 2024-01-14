@@ -16,9 +16,7 @@ const CameraScreen = ({ navigation }) => {
   const handleTakePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-
-      navigation.goBack();
-      Alert.alert("Zdjęcie zrobione!", photo.uri);
+      navigation.navigate("NotebookScreen", { photoUri: photo.uri });
     }
   };
 

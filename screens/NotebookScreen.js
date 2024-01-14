@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   TextInput,
@@ -7,38 +7,94 @@ import {
   FlatList,
   Text,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchNotes, saveNote, updateNote, deleteNote } from "../data/api";
+import { AuthContext } from "../contexts/AuthContext";
 
-const NotebookScreen = ({ navigation }) => {
+const NotebookScreen = ({ navigation, route }) => {
   const [note, setNote] = useState("");
   const [notesList, setNotesList] = useState([]);
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+  const { user } = useContext(AuthContext);
 
-  const loadNotes = async () => {
-    try {
-      const notes = await AsyncStorage.getItem("notes");
-      if (notes !== null) {
-        setNotesList(JSON.parse(notes));
+  useEffect(() => {
+    const loadNotes = async () => {
+      const fetchedNotes = await fetchNotes(user.id);
+      setNotesList(fetchedNotes || []);
+    };
+
+    loadNotes();
+  }, [user.id]);
+
+  useEffect(() => {
+    const createNoteWithPhoto = async (photoUri) => {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleDateString();
+      const newNote = {
+        date: formattedDate,
+        text: "Nowa notatka",
+        photo: photoUri,
+      };
+
+      try {
+        const savedNote = await saveNote(user.id, newNote);
+        setNotesList([...notesList, savedNote]);
+      } catch (e) {
+        console.error(e.message);
       }
+    };
+
+    if (route.params?.photoUri) {
+      createNoteWithPhoto(route.params.photoUri);
+    }
+  }, [route.params?.photoUri]);
+
+  const handleSaveNote = async () => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString();
+    const newNote = { date: formattedDate, text: note };
+
+    try {
+      const savedNote = await saveNote(user.id, newNote);
+      setNotesList([...notesList, savedNote]);
+      setNote("");
     } catch (e) {
       console.error(e.message);
     }
   };
 
-  useEffect(() => {
-    loadNotes();
-  }, []);
+  const handleEditNote = (noteId, text) => {
+    setEditingNoteId(noteId);
+    setEditingText(text);
+  };
 
-  const handleSaveNote = async () => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString();
-
-    const newNote = `${formattedDate}: ${note}`;
-    const newNotesList = [...notesList, newNote];
-
+  const handleUpdateNote = async (noteId) => {
     try {
-      await AsyncStorage.setItem("notes", JSON.stringify(newNotesList));
-      setNotesList(newNotesList);
-      setNote("");
+      const currentNote = notesList.find((note) => note.id === noteId);
+
+      const updatedNoteData = {
+        ...currentNote,
+        text: editingText,
+      };
+
+      const updatedNote = await updateNote(noteId, updatedNoteData);
+
+      setNotesList(
+        notesList.map((note) => (note.id === noteId ? updatedNote : note))
+      );
+
+      setEditingNoteId(null);
+      setEditingText("");
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  const handleDeleteNote = async (noteId) => {
+    try {
+      await deleteNote(noteId);
+
+      setNotesList(notesList.filter((note) => note.id !== noteId));
     } catch (e) {
       console.error(e.message);
     }
@@ -46,7 +102,27 @@ const NotebookScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.noteItem}>
-      <Text style={styles.noteText}>{item}</Text>
+      {item.photo && (
+        <Image source={{ uri: item.photo }} style={styles.noteImage} />
+      )}
+      {editingNoteId === item.id ? (
+        <TextInput
+          style={styles.input}
+          onChangeText={setEditingText}
+          value={editingText}
+        />
+      ) : (
+        <Text style={styles.noteText}>{`${item.date}: ${item.text}`}</Text>
+      )}
+      {editingNoteId === item.id ? (
+        <Button title="Save" onPress={() => handleUpdateNote(item.id)} />
+      ) : (
+        <Button
+          title="Edit"
+          onPress={() => handleEditNote(item.id, item.text)}
+        />
+      )}
+      <Button title="Delete" onPress={() => handleDeleteNote(item.id)} />
     </View>
   );
 
@@ -62,7 +138,7 @@ const NotebookScreen = ({ navigation }) => {
       <FlatList
         data={notesList}
         renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

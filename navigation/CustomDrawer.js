@@ -23,7 +23,7 @@ function CustomDrawer(props) {
           label="Logout"
           onPress={() => {
             logout();
-            props.navigation.navigate("AuthStack");
+            // props.navigation.navigate("AuthStack");
           }}
           icon={() => <Ionicons name="log-out-outline" size={20} />}
           labelStyle={styles.logoutLabel}

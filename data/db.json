@@ -3,13 +3,18 @@
     {
       "username": "test",
       "password": "test",
-      "id": 1,
-      "skinType": "Twoja skóra wydaje się być typu normalnego."
+      "id": 1
     },
     {
       "username": "test2",
       "password": "test2",
       "id": 2
+    },
+    {
+      "username": "test32",
+      "password": "test32",
+      "id": 3
     }
-  ]
+  ],
+  "notes": []
 }

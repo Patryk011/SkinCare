@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:3000";
-// const API_URL = "http://10.0.2.2:3000";
+// const API_URL = "http://localhost:3000";
+const API_URL = "http://10.0.2.2:3000";
 
 export const isUserExists = async (username) => {
   try {
@@ -66,5 +66,70 @@ export const updateUser = async (userId, updates) => {
     return response.json();
   } catch (error) {
     console.error("Error during updating user data:", error);
+  }
+};
+
+export const fetchNotes = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/notes?userId=${userId}`);
+    return response.json();
+  } catch (error) {
+    console.error("Error during fetching notes:", error);
+  }
+};
+
+export const saveNote = async (userId, note) => {
+  try {
+    const noteWithUserId = { ...note, userId };
+    const response = await fetch(`${API_URL}/notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(noteWithUserId),
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error during saving note:", error);
+  }
+};
+
+export const updateNoteWithPhoto = async (userId, noteId, photoUrl) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/notes/${noteId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ photo: photoUrl }),
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error during updating note:", error);
+  }
+};
+
+export const updateNote = async (noteId, updatedNote) => {
+  try {
+    const response = await fetch(`${API_URL}/notes/${noteId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedNote),
+    });
+    return response.json();
+  } catch (error) {
+    console.error("Error during updating note:", error);
+  }
+};
+
+export const deleteNote = async (noteId) => {
+  try {
+    await fetch(`${API_URL}/notes/${noteId}`, {
+      method: "DELETE",
+    });
+  } catch (error) {
+    console.error("Error during deleting note:", error);
   }
 };
