@@ -20,7 +20,6 @@ const LoginScreen = ({ navigation }) => {
     const result = await loginUser(username, password);
     if (result.success) {
       login(result.user);
-      navigation.navigate("Home");
     } else {
       Alert.alert("Błąd", "Nieprawidłowe dane logowania");
     }

@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "username": "test",
-      "password": "test",
+      "username": "Patryk",
+      "password": "patryk1",
       "id": 1,
       "skinType": "Twoja skóra wydaje się być typu normalnego."
     },
@@ -10,12 +10,14 @@
       "username": "test2",
       "password": "test2",
       "id": 2
-    },
+    }
+    
+  ],
+  "notes": [
     {
-      "id": "c778",
-      "username": "kernel",
-      "password": "kernel",
-      "skinType": "Twoja skóra może być typu suchego."
+      "photo": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FSkinCare-98711103-8d52-4c52-9aef-8bad13c7596a/Camera/54d6daa5-3355-4b8e-afe3-3ecf8795bbb0.jpg",
+      "userId": 1,
+      "id": 1
     }
   ]
 }
