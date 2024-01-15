@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import { getUserData, updateUser } from "../data/api";
 
@@ -111,8 +111,6 @@ const TestResultScreen = ({ route, navigation }) => {
           ))}
         </View>
         <Text style={styles.additionalInfo}>{additionalInfo}</Text>
-
-        {/* Dodany różowy guzik */}
         <TouchableOpacity
           style={styles.shopButton}
           onPress={() => navigation.navigate("Shop")}
@@ -130,10 +128,12 @@ const TestResultScreen = ({ route, navigation }) => {
           Aby uzyskać wynik testu na typ skóry, najpierw musisz odpowiedzieć na
           pytania.
         </Text>
-        <Button
-          title="Rozpocznij Test Skóry"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("SkinTest")}
-        />
+        >
+          <Text style={styles.buttonText}>Rozpocznij Test Skóry</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -150,6 +150,23 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+
+  button: {
+    marginTop: 20,
+    backgroundColor: "#2edaff",
+    padding: 15,
+    borderRadius: 10,
+  },
+  message: {
+    fontWeight: "bold",
+  },
+
+  buttonText: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 14,
+    fontWeight: "bold",
   },
   recommendation: {
     fontSize: 18,

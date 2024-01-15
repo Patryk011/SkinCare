@@ -9,7 +9,8 @@
     {
       "username": "test2",
       "password": "test2",
-      "id": 2
+      "id": 2,
+      "skinType": "Twoja skóra może być typu suchego."
     },
     {
       "username": "test32",
