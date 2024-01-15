@@ -16,7 +16,7 @@ const CameraScreen = ({ navigation }) => {
   const handleTakePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      navigation.navigate("NotebookScreen", { photoUri: photo.uri });
+      navigation.navigate("Notebook", { photoUri: photo.uri });
     }
   };
 
@@ -49,18 +49,21 @@ const CameraScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
-    flexDirection: "row",
-    margin: 20,
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
     justifyContent: "center",
-  },
-
-  text: {
-    justifyContent: "center",
-    flex: 1,
     alignItems: "center",
-    margin: "0 auto",
+  },
+  button: {
+    padding: 8,
+    backgroundColor: "blue",
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 12,
   },
 });
 

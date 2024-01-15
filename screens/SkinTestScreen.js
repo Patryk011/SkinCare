@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import questions from "../utils/questions";
+import { Directions } from "react-native-gesture-handler";
 
 const SkinTestScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -45,11 +46,21 @@ const SkinTestScreen = ({ navigation }) => {
         <Text style={styles.message}>
           Test na typ skóry został zakończony. Sprawdź wyniki w swoim profilu.
         </Text>
-        <Button
-          title="Wróć do profilu"
-          onPress={() => navigation.navigate("Profile")}
-        />
-        <Button title="Resetuj Test" onPress={resetTest} color="#ff6347" />
+        <View style={styles.buttonsBack}>
+          <View style={styles.buttonWrapper}>
+            <Button
+              title="Wróć do profilu"
+              onPress={() => navigation.navigate("Profile")}
+            />
+          </View>
+          <View style={styles.buttonWrapper}>
+            <Button
+              title="Wykonaj od nowa"
+              onPress={resetTest}
+              color="#ff6347"
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -61,13 +72,27 @@ const SkinTestScreen = ({ navigation }) => {
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.buttonYes}
+          style={{
+            backgroundColor: "#32CD32",
+            padding: 10,
+            borderRadius: 5,
+            marginRight: 15,
+            width: 100,
+            alignItems: "center",
+          }}
           onPress={() => handleAnswer(true)}
         >
           <Text style={styles.buttonText}>Tak</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.buttonNo}
+          style={{
+            backgroundColor: "red",
+            padding: 10,
+            borderRadius: 5,
+            marginLeft: 15,
+            width: 100,
+            alignItems: "center",
+          }}
           onPress={() => handleAnswer(false)}
         >
           <Text style={styles.buttonText}>Nie</Text>
@@ -84,6 +109,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
+  buttonsBack: {
+    flexDirection: "row",
+    marginTop: 50,
+    justifyContent: "space-between",
+  },
+
+  buttonWrapper: {
+    flex: 1, // This will make each button wrapper take up equal space
+    marginHorizontal: 5, // This will add space between the buttons
+  },
   question: {
     fontSize: 18,
     marginBottom: 20,
@@ -93,23 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 20,
   },
-  buttonYes: {
-    backgroundColor: "#32CD32",
-    padding: 10,
-    borderRadius: 5,
-    marginRight: 15,
-    width: 100,
-    alignItems: "center",
-  },
 
-  buttonNo: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-    marginLeft: 15,
-    width: 100,
-    alignItems: "center",
-  },
   buttonText: {
     color: "#fff",
     fontSize: 16,

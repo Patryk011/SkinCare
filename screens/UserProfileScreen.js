@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -43,6 +44,11 @@ const UserProfileScreen = () => {
         return;
       }
 
+      if (userData.password === newPassword) {
+        alert("Hasła muszą się różnić");
+        return;
+      }
+
       if (userData.password === currentPassword) {
         const updatedData = {
           ...userData,
@@ -51,6 +57,8 @@ const UserProfileScreen = () => {
 
         await updateUser(userId, updatedData);
         alert("Hasło zostało zmienione.");
+        setCurrentPassword("");
+        setNewPassword("");
       } else {
         alert("Aktualne hasło jest nieprawidłowe.");
       }
@@ -83,6 +91,8 @@ const UserProfileScreen = () => {
       await updateUser(userId, updatedData);
       setUsername(newUsername);
       alert("Nazwa użytkownika została zaktualizowana");
+
+      setNewUsername("");
     } catch (err) {
       console.error("Error:", err);
       alert("Nie udało się zaktualizować nazwy użytkownika");

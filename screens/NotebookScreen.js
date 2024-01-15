@@ -6,9 +6,13 @@ import {
   StyleSheet,
   FlatList,
   Text,
+  Image,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { fetchNotes, saveNote, updateNote, deleteNote } from "../data/api";
 import { AuthContext } from "../contexts/AuthContext";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const NotebookScreen = ({ navigation, route }) => {
   const [note, setNote] = useState("");
@@ -28,11 +32,7 @@ const NotebookScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const createNoteWithPhoto = async (photoUri) => {
-      const currentDate = new Date();
-      const formattedDate = currentDate.toLocaleDateString();
       const newNote = {
-        date: formattedDate,
-        text: "Nowa notatka",
         photo: photoUri,
       };
 
@@ -50,6 +50,10 @@ const NotebookScreen = ({ navigation, route }) => {
   }, [route.params?.photoUri]);
 
   const handleSaveNote = async () => {
+    if (note.trim() === "") {
+      Alert.alert("Notatka nie może być pusta");
+      return;
+    }
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const newNote = { date: formattedDate, text: note };
@@ -59,7 +63,7 @@ const NotebookScreen = ({ navigation, route }) => {
       setNotesList([...notesList, savedNote]);
       setNote("");
     } catch (e) {
-      console.error(e.message);
+      console.log(e.message);
     }
   };
 
@@ -100,32 +104,53 @@ const NotebookScreen = ({ navigation, route }) => {
     }
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.noteItem}>
-      {item.photo && (
-        <Image source={{ uri: item.photo }} style={styles.noteImage} />
-      )}
-      {editingNoteId === item.id ? (
-        <TextInput
-          style={styles.input}
-          onChangeText={setEditingText}
-          value={editingText}
-        />
-      ) : (
-        <Text style={styles.noteText}>{`${item.date}: ${item.text}`}</Text>
-      )}
-      {editingNoteId === item.id ? (
-        <Button title="Save" onPress={() => handleUpdateNote(item.id)} />
-      ) : (
-        <Button
-          title="Edit"
-          onPress={() => handleEditNote(item.id, item.text)}
-        />
-      )}
-      <Button title="Delete" onPress={() => handleDeleteNote(item.id)} />
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    if (item.photo) {
+      return (
+        <View style={styles.noteItem}>
+          <Image source={{ uri: item.photo }} style={styles.imageStyle} />
+          <View style={styles.iconStyles}>
+            <TouchableOpacity onPress={() => handleDeleteNote(item.id)}>
+              <Icon name="close" size={40} color="red" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.noteItem}>
+          {editingNoteId === item.id ? (
+            <TextInput
+              style={styles.input}
+              onChangeText={setEditingText}
+              value={editingText}
+            />
+          ) : (
+            <Text style={styles.noteText}>{`${item.date}: ${item.text}`}</Text>
+          )}
+          {editingNoteId === item.id ? (
+            <View style={styles.iconStyles}>
+              <TouchableOpacity onPress={() => handleUpdateNote(item.id)}>
+                <Icon name="check" size={24} color="green" />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.iconStyles}>
+              <TouchableOpacity
+                onPress={() => handleEditNote(item.id, item.text)}
+              >
+                <Icon name="edit" size={24} color="blue" />
+              </TouchableOpacity>
+            </View>
+          )}
 
+          <TouchableOpacity onPress={() => handleDeleteNote(item.id)}>
+            <Icon name="close" size={24} color="red" />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <TextInput
@@ -149,20 +174,35 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
+  noteItem: {
+    flexDirection: "row",
+    backgroundColor: "lightgrey",
+    padding: 10,
+    marginTop: 10,
+    alignItems: "center",
+  },
+
+  noteText: {
+    fontSize: 16,
+  },
+
+  iconStyles: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
+  imageStyle: {
+    width: 150,
+    height: 150,
+    marginRight: 10,
+  },
   input: {
     height: 50,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-  },
-  noteItem: {
-    backgroundColor: "lightgrey",
-    padding: 10,
-    marginTop: 10,
-  },
-  noteText: {
-    fontSize: 16,
   },
 });
 
