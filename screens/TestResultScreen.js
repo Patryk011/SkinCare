@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import { getUserData, updateUser } from "../data/api";
 
@@ -111,11 +111,19 @@ const TestResultScreen = ({ route, navigation }) => {
           ))}
         </View>
         <Text style={styles.additionalInfo}>{additionalInfo}</Text>
+
+        {/* Dodany różowy guzik */}
+        <TouchableOpacity
+  style={styles.shopButton}
+  onPress={() => navigation.navigate("Shop")}
+>
+  <Text style={styles.shopButtonText}>Sklep</Text>
+</TouchableOpacity>
       </View>
     );
   }
 
-  return null; // Jeżeli user.skinType jest falsy, nic nie renderujemy
+  return null; // Zwracamy null tylko w przypadku braku user.skinType
 };
 
 const styles = StyleSheet.create({
@@ -147,6 +155,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 20,
     fontStyle: "italic",
+  },
+  shopButton: {
+    marginTop: 20,
+    backgroundColor: "#ff69b4", // Różowy kolor
+    padding: 15,
+    borderRadius: 10,
+  },
+  shopButtonText: {
+    color: "#ffffff",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
