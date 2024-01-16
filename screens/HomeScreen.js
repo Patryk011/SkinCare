@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { getUserData } from "../data/api";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -25,16 +25,17 @@ const HomeScreen = () => {
   }, [userId]);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../assets/kosmetyki_bozq.png")}
+      style={styles.container}
+    >
       {userData && (
-        <Text style={styles.title}>
-          Witaj {userData.username} w SkinCare App
-        </Text>
+        <Text style={styles.title}>Witaj {userData.username} w SkinCare</Text>
       )}
       <Text style={[styles.subtitle, styles.underline]}>
         Twoje centrum pielęgnacji skóry
       </Text>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -43,8 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FCEFEF", 
-    padding: 20,
+    marginTop: 100,
   },
   logo: {
     width: 150,
@@ -55,11 +55,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
+    position: "absolute",
+    top: -70,
   },
   subtitle: {
     fontSize: 18,
     color: "#666",
-    marginBottom: 20,
+    position: "absolute",
+    top: -30,
   },
   underline: {
     textDecorationLine: "underline",
