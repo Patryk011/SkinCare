@@ -112,7 +112,6 @@ const TestResultScreen = ({ route, navigation }) => {
         </View>
         <Text style={styles.additionalInfo}>{additionalInfo}</Text>
 
-        {/* Dodany różowy guzik */}
         <TouchableOpacity
   style={styles.shopButton}
   onPress={() => navigation.navigate("Shop")}
@@ -123,7 +122,7 @@ const TestResultScreen = ({ route, navigation }) => {
     );
   }
 
-  return null; // Zwracamy null tylko w przypadku braku user.skinType
+  return null; 
 };
 
 const styles = StyleSheet.create({
