@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import { getUserData, updateUser } from "../data/api";
 
@@ -52,6 +52,19 @@ const TestResultScreen = ({ route, navigation }) => {
     }
     console.log("wynik: " + result);
   }, [route.params?.answers]);
+
+  if (!user.skinType) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.result}>Zapraszamy do zrobienia testu na typ skóry</Text>
+        <Button
+          title="Rozpocznij test"
+          onPress={() => navigation.navigate("SkinTest")}
+          color="#ff69b4" 
+        />
+      </View>
+    );
+  }
 
   if (user.skinType) {
     let recommendationsTitle = "";
