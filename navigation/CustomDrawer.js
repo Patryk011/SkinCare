@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/drawer";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../contexts/AuthContext";
+import { DrawerActions } from "@react-navigation/native";
 
 function CustomDrawer(props) {
   const { logout } = useContext(AuthContext);
@@ -23,6 +24,7 @@ function CustomDrawer(props) {
           label="Logout"
           onPress={() => {
             logout();
+            props.navigation.dispatch(DrawerActions.closeDrawer());
             // props.navigation.navigate("AuthStack");
           }}
           icon={() => <Ionicons name="log-out-outline" size={20} />}

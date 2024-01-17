@@ -1,8 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  ImageBackground,
+} from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 import questions from "../utils/questions";
-import { Directions } from "react-native-gesture-handler";
 
 const SkinTestScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -42,63 +48,73 @@ const SkinTestScreen = ({ navigation }) => {
 
   if (endView) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          Test na typ skóry został zakończony. Sprawdź wyniki w swoim profilu.
-        </Text>
-        <View style={styles.buttonsBack}>
-          <View style={styles.buttonWrapper}>
-            <Button
-              title="Wróć do profilu"
-              onPress={() => navigation.navigate("Profile")}
-            />
-          </View>
-          <View style={styles.buttonWrapper}>
-            <Button
-              title="Wykonaj od nowa"
-              onPress={resetTest}
-              color="#ff6347"
-            />
+      <ImageBackground
+        source={require("../assets/SkinTesst.png")}
+        style={styles.container}
+      >
+        <View style={styles.container}>
+          <Text style={styles.message}>
+            Test na typ skóry został zakończony. Sprawdź wyniki w swoim profilu.
+          </Text>
+          <View style={styles.buttonsBack}>
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Wróć do profilu"
+                onPress={() => navigation.navigate("Profile")}
+              />
+            </View>
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Wykonaj od nowa"
+                onPress={resetTest}
+                color="#ff6347"
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.question}>
-        {questions[currentQuestionIndex].text}
-      </Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#32CD32",
-            padding: 10,
-            borderRadius: 5,
-            marginRight: 15,
-            width: 100,
-            alignItems: "center",
-          }}
-          onPress={() => handleAnswer(true)}
-        >
-          <Text style={styles.buttonText}>Tak</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "red",
-            padding: 10,
-            borderRadius: 5,
-            marginLeft: 15,
-            width: 100,
-            alignItems: "center",
-          }}
-          onPress={() => handleAnswer(false)}
-        >
-          <Text style={styles.buttonText}>Nie</Text>
-        </TouchableOpacity>
+    <ImageBackground
+      source={require("../assets/SkinTesst.png")}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        <Text style={styles.question}>
+          {questions[currentQuestionIndex].text}
+        </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#32CD32",
+              padding: 10,
+              borderRadius: 5,
+              marginRight: 15,
+              width: 100,
+              alignItems: "center",
+            }}
+            onPress={() => handleAnswer(true)}
+          >
+            <Text style={styles.buttonText}>Tak</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "red",
+              padding: 10,
+              borderRadius: 5,
+              marginLeft: 15,
+              width: 100,
+              alignItems: "center",
+            }}
+            onPress={() => handleAnswer(false)}
+          >
+            <Text style={styles.buttonText}>Nie</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -116,8 +132,7 @@ const styles = StyleSheet.create({
   },
 
   buttonWrapper: {
-    flex: 1, // This will make each button wrapper take up equal space
-    marginHorizontal: 5, // This will add space between the buttons
+    marginHorizontal: 5,
   },
   question: {
     fontSize: 18,
