@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { getUserData } from "../data/api";
 import { AuthContext } from "../contexts/AuthContext";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
+  const [isTestDone, setIsTestDone] = useState(false);
   const { user } = useContext(AuthContext);
 
   const userId = user ? user.id : null;
@@ -19,14 +26,22 @@ const HomeScreen = () => {
       }
     };
 
+    if (user.skinType) {
+      setIsTestDone(true);
+    } else {
+      setIsTestDone(false);
+    }
+
     if (userId) {
       fetchData();
     }
   }, [userId]);
 
+  console.log(isTestDone);
+
   return (
     <ImageBackground
-      source={require("../assets/kosmetyki_bozq.png")}
+      source={require("../assets/Home.png")}
       style={styles.container}
     >
       {userData && (
@@ -35,6 +50,21 @@ const HomeScreen = () => {
       <Text style={[styles.subtitle, styles.underline]}>
         Twoje centrum pielęgnacji skóry
       </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("SkinTest")}
+        >
+          <Text style={{ fontSize: 18 }}>Test skóry</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, isTestDone ? null : styles.disabledButton]}
+          onPress={() => isTestDone && navigation.navigate("TestResult")}
+          disabled={!isTestDone}
+        >
+          <Text style={{ fontSize: 18 }}>Wyniki</Text>
+        </TouchableOpacity>
+      </View>
     </ImageBackground>
   );
 };
@@ -62,10 +92,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#666",
     position: "absolute",
+    fontWeight: "bold",
     top: -30,
   },
   underline: {
     textDecorationLine: "underline",
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 40,
+    width: "100%",
+  },
+  button: {
+    backgroundColor: "#0057d9",
+    padding: 10,
+    borderRadius: 5,
+  },
+  disabledButton: {
+    backgroundColor: "grey",
   },
 });
 
