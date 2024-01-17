@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   TextInput,
@@ -10,7 +9,7 @@ import {
   Alert,
   Image,
 } from "react-native";
-import { getUserData, updateUser, isUserExists } from "../data/api";
+import { getUserData, updateUser, isUserExists, updateProfileImage } from "../data/api";
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -35,6 +34,9 @@ const UserProfileScreen = () => {
       console.log("UserData in UserProfileScreen:", data);
       if (data) {
         setUsername(data.username);
+      }
+      if (data && data.skinType) {
+        setProfileImage(data.profileImage)
       }
     };
     fetchUserData();
@@ -82,7 +84,7 @@ const UserProfileScreen = () => {
       }
 
       const currentData = await getUserData(userId);
-
+      
       if (!currentData) {
         alert("Nie znaleziono danych użytkownika");
         return;
@@ -119,37 +121,14 @@ const UserProfileScreen = () => {
   
         try {
           
-          await AsyncStorage.setItem('profileImage', selectedAsset.uri);
+          await updateProfileImage(userId, selectedAsset)
         } catch (error) {
           console.error('Error saving image URI to AsyncStorage:', error);
         }
       }
     }
   };
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getUserData(userId);
 
-      if (data) {
-        setUsername(data.username);
-      }
-
-      // Retrieve the selected image URI from AsyncStorage
-      const storedProfileImage = await AsyncStorage.getItem('profileImage');
-      if (storedProfileImage) {
-        setProfileImage(storedProfileImage);
-      }
-
-      if (data && data.skinType) {
-        setIsTestDone(true);
-      }
-    } catch (error) {
-      console.error('Error fetching user data in HomeScreen:', error);
-    }
-  };
-  fetchData();
-}, [userId]);
 
   return (
     <View style={styles.container}>

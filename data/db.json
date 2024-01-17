@@ -1,39 +1,8 @@
 {
   "users": [
-    {
-      "username": "Patryk",
-      "password": "patryk1",
-      "id": 1
-    },
-    {
-      "username": "test2",
-      "password": "test2",
-      "id": 2,
-      "skinType": "Twoja skóra może być typu suchego."
-    },
-    {
-      "username": "test32",
-      "password": "test32",
-      "id": 3
-    },
-    {
-      "id": "fd01",
-      "username": "kernel",
-      "password": "kernel"
-    }
+
   ],
   "notes": [
-    {
-      "id": "1dcc",
-      "date": "1/15/2024",
-      "text": "dzien",
-      "userId": "13dc"
-    },
-    {
-      "id": "763e",
-      "date": "1/17/2024",
-      "text": "lallal",
-      "userId": "fd01"
-    }
+ 
   ]
 }

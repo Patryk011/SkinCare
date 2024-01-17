@@ -133,3 +133,28 @@ export const deleteNote = async (noteId) => {
     console.error("Error during deleting note:", error);
   }
 };
+
+
+export const updateProfileImage = async (userId, imageUri) => {
+  try {
+    const userDataResponse = await fetch(`${API_URL}/users/${userId}`)
+    const userData = await userDataResponse.json();
+
+
+    const updatedUser = {
+      ...userData,
+      profileImage: imageUri,
+    }
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify(updatedUser),
+    })
+    return response.json();
+  } catch (err) {
+    console.error('Error: ' + err);
+  }
+
+}
