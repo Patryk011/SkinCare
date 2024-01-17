@@ -117,6 +117,9 @@ const TestResultScreen = ({ route, navigation }) => {
         >
           <Text style={styles.shopButtonText}>Sklep</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text style={styles.backHome}>Powrót do ekranu głównego</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -151,7 +154,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-
+  backHome: {
+    flexDirection: "row",
+    marginTop: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   button: {
     marginTop: 20,
     backgroundColor: "#2edaff",

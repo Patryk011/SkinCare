@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { getUserData } from "../data/api";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -16,28 +17,26 @@ const HomeScreen = ({ navigation }) => {
 
   const userId = user ? user.id : null;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getUserData(userId);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        const data = await getUserData(userId);
 
-      console.log("data: " + data);
-      if (data) {
-        setUserData(data);
+        if (data) {
+          setUserData(data);
+        }
+        if (data && data.skinType) {
+          setIsTestDone(true);
+        }
+      };
+
+      if (userId) {
+        fetchData();
       }
-    };
+    }, [userId])
+  );
 
-    if (user.skinType) {
-      setIsTestDone(true);
-    } else {
-      setIsTestDone(false);
-    }
-
-    if (userId) {
-      fetchData();
-    }
-  }, [userId]);
-
-  console.log(isTestDone);
+  console.log("isTest:" + isTestDone);
 
   return (
     <ImageBackground
