@@ -59,7 +59,7 @@ const SkinTestScreen = ({ navigation }) => {
           <View style={styles.buttonsBack}>
             <View style={styles.buttonWrapper}>
               <Button
-                title="Wróć do profilu"
+                title="Profil"
                 onPress={() => navigation.navigate("Profile")}
               />
             </View>
