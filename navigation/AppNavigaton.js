@@ -21,11 +21,17 @@ const Stack = createStackNavigator();
 function HomeStack() {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
+    // screenOptions={{
+    //   headerShown: false,
+    // }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="SkinTest" component={SkinTestScreen} />
+      <Stack.Screen name="TestResult" component={TestResultScreen} />
     </Stack.Navigator>
   );
 }
@@ -105,7 +111,7 @@ export function AppNavigation() {
               ),
             }}
           />
-          <Drawer.Screen
+          {/* <Drawer.Screen
             name="SkinTest"
             component={SkinTestScreen}
             options={{
@@ -122,7 +128,7 @@ export function AppNavigation() {
                 <Ionicons name="analytics-outline" size={20} color={color} />
               ),
             }}
-          />
+          /> */}
         </>
       ) : (
         <Drawer.Screen
@@ -134,5 +140,3 @@ export function AppNavigation() {
     </Drawer.Navigator>
   );
 }
-
-
