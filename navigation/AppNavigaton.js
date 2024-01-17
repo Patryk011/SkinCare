@@ -30,8 +30,8 @@ function HomeStack() {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="SkinTest" component={SkinTestScreen} />
-      <Stack.Screen name="TestResult" component={TestResultScreen} />
+      {/* <Stack.Screen name="SkinTest" component={SkinTestScreen} />
+      <Stack.Screen name="TestResult" component={TestResultScreen} /> */}
     </Stack.Navigator>
   );
 }
@@ -111,7 +111,7 @@ export function AppNavigation() {
               ),
             }}
           />
-          {/* <Drawer.Screen
+          <Drawer.Screen
             name="SkinTest"
             component={SkinTestScreen}
             options={{
@@ -128,7 +128,7 @@ export function AppNavigation() {
                 <Ionicons name="analytics-outline" size={20} color={color} />
               ),
             }}
-          /> */}
+          />
         </>
       ) : (
         <Drawer.Screen

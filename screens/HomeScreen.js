@@ -24,9 +24,13 @@ const HomeScreen = ({ navigation }) => {
 
         if (data) {
           setUserData(data);
+          
         }
         if (data && data.skinType) {
           setIsTestDone(true);
+          console.log(data.skinType)
+        } else {
+          setIsTestDone(false)
         }
       };
 
