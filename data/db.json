@@ -16,6 +16,11 @@
       "username": "test32",
       "password": "test32",
       "id": 3
+    },
+    {
+      "id": "fd01",
+      "username": "kernel",
+      "password": "kernel"
     }
   ],
   "notes": [
@@ -24,6 +29,12 @@
       "date": "1/15/2024",
       "text": "dzien",
       "userId": "13dc"
+    },
+    {
+      "id": "763e",
+      "date": "1/17/2024",
+      "text": "lallal",
+      "userId": "fd01"
     }
   ]
 }

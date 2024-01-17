@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getUserData, updateUser, isUserExists } from "../data/api";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   TextInput,
@@ -8,7 +8,10 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
+import { getUserData, updateUser, isUserExists } from "../data/api";
+import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from "../contexts/AuthContext";
 
 const UserProfileScreen = () => {
@@ -19,6 +22,7 @@ const UserProfileScreen = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [profileImage, setProfileImage] = useState(null); 
 
   useEffect(() => {
     if (!userId) {
@@ -28,6 +32,7 @@ const UserProfileScreen = () => {
     }
     const fetchUserData = async () => {
       const data = await getUserData(userId);
+      console.log("UserData in UserProfileScreen:", data);
       if (data) {
         setUsername(data.username);
       }
@@ -99,8 +104,64 @@ const UserProfileScreen = () => {
     }
   };
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      if (result.assets && result.assets.length > 0) {
+        const selectedAsset = result.assets[0];
+        setProfileImage(selectedAsset.uri);
+  
+        try {
+          
+          await AsyncStorage.setItem('profileImage', selectedAsset.uri);
+        } catch (error) {
+          console.error('Error saving image URI to AsyncStorage:', error);
+        }
+      }
+    }
+  };
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const data = await getUserData(userId);
+
+      if (data) {
+        setUsername(data.username);
+      }
+
+      // Retrieve the selected image URI from AsyncStorage
+      const storedProfileImage = await AsyncStorage.getItem('profileImage');
+      if (storedProfileImage) {
+        setProfileImage(storedProfileImage);
+      }
+
+      if (data && data.skinType) {
+        setIsTestDone(true);
+      }
+    } catch (error) {
+      console.error('Error fetching user data in HomeScreen:', error);
+    }
+  };
+  fetchData();
+}, [userId]);
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={pickImage}>
+        <View style={styles.profileImageContainer}>
+          {profileImage ? (
+            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          ) : (
+            <Text>Dodaj zdjęcie</Text>
+          )}
+        </View>
+      </TouchableOpacity>
       <Text style={styles.userTitle}> Użytkownik: {username}</Text>
       <Text style={styles.header}>Edytuj profil</Text>
 
@@ -161,12 +222,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginTop: 100,
+    marginTop: 20,
   },
   sectionHeader: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 10,
     color: "#333",
   },
@@ -205,6 +266,19 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     fontWeight: "bold",
+  },
+  profileImageContainer: {
+    borderRadius: 75,
+    overflow: "hidden",
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  profileImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });
 
