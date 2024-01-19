@@ -126,7 +126,7 @@ const NotebookScreen = ({ navigation, route }) => {
               value={editingText}
             />
           ) : (
-            <Text style={styles.noteText}>{`${item.date}: ${item.text}`}</Text>
+            <Text style={styles.noteText}>{`${item.date} ${item.text}`}</Text>
           )}
           {editingNoteId === item.id ? (
             <View style={styles.iconStyles}>
@@ -180,10 +180,14 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     alignItems: "center",
+
   },
 
   noteText: {
     fontSize: 16,
+    flex: 5,
+    maxWidth: '100%',
+
   },
 
   iconStyles: {

@@ -1,8 +1,23 @@
 {
   "users": [
-
+    {
+      "username": "test1",
+      "password": "test",
+      "id": 1
+    }
   ],
   "notes": [
- 
+    {
+      "date": "1/19/2024",
+      "text": "fsasdfgfsdafdsafsdafsdafdssdfafdsafdsadfsadffsda",
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "date": "1/19/2024",
+      "text": "sdfafdsadfsdfasfdsafdsafdsafdsafdasdfsdfafsdasfadfdasfdasfdassfadfasd",
+      "userId": 1,
+      "id": 2
+    }
   ]
 }
