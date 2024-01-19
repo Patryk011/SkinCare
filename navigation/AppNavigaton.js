@@ -44,8 +44,8 @@ function AuthStack() {
         component={WelcomeScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Logowanie" component={LoginScreen} />
+      <Stack.Screen name="Rejestracja" component={RegisterScreen} />
     </Stack.Navigator>
   );
 }
@@ -74,7 +74,7 @@ export function AppNavigation() {
             name="Profile"
             component={UserProfileScreen}
             options={{
-              title: "Profile",
+              title: "Profil",
               drawerIcon: ({ color }) => (
                 <Ionicons
                   name="person-circle-outline"
@@ -97,6 +97,7 @@ export function AppNavigation() {
             name="Camera"
             component={CameraScreen}
             options={{
+              title: "Kamera",
               drawerIcon: ({ color }) => (
                 <Ionicons name="camera-outline" size={20} color={color} />
               ),
@@ -106,6 +107,7 @@ export function AppNavigation() {
             name="Shop"
             component={ShopScreen}
             options={{
+              title: "Sklepy",
               drawerIcon: ({ color }) => (
                 <Ionicons name="cart-outline" size={20} color={color} />
               ),
@@ -115,6 +117,7 @@ export function AppNavigation() {
             name="SkinTest"
             component={SkinTestScreen}
             options={{
+              title: "Test skóry",
               drawerIcon: ({ color }) => (
                 <Ionicons name="help-outline" size={20} color={color} />
               ),
@@ -124,6 +127,7 @@ export function AppNavigation() {
             name="TestResult"
             component={TestResultScreen}
             options={{
+              title: "Wyniki testu",
               drawerIcon: ({ color }) => (
                 <Ionicons name="analytics-outline" size={20} color={color} />
               ),

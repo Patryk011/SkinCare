@@ -1,8 +1,10 @@
 {
   "users": [
- 
+    {
+      "username": "a",
+      "password": "a",
+      "id": 1
+    }
   ],
-  "notes": [
-  
-  ]
+  "notes": []
 }

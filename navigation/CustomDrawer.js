@@ -21,7 +21,7 @@ function CustomDrawer(props) {
       <View style={styles.bottomDrawerSection}>
         <View style={styles.separator} />
         <DrawerItem
-          label="Logout"
+          label="Wyloguj"
           onPress={() => {
             logout();
             props.navigation.dispatch(DrawerActions.closeDrawer());

@@ -20,7 +20,7 @@ const RegisterScreen = ({ navigation }) => {
     const result = await registerUser(username, password);
     if (result) {
       Alert.alert("Sukces", "Rejestracja zakończona pomyślnie");
-      navigation.navigate("Login");
+      navigation.navigate("Logowanie");
     } else {
       Alert.alert("Błąd", "Nie udało się stworzyć konta");
     }

@@ -15,14 +15,14 @@ const WelcomeScreen = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Button
               title="Zaloguj się"
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.navigate("Logowanie")}
               color="#007bff"
             />
           </View>
           <View style={styles.buttonContainer}>
             <Button
               title="Zarejestruj się"
-              onPress={() => navigation.navigate("Register")}
+              onPress={() => navigation.navigate("Rejestracja")}
               color="#28a745"
             />
           </View>
