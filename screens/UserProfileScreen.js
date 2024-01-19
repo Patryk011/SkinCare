@@ -8,9 +8,15 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ScrollView,
 } from "react-native";
-import { getUserData, updateUser, isUserExists, updateProfileImage } from "../data/api";
-import * as ImagePicker from 'expo-image-picker';
+import {
+  getUserData,
+  updateUser,
+  isUserExists,
+  updateProfileImage,
+} from "../data/api";
+import * as ImagePicker from "expo-image-picker";
 import { AuthContext } from "../contexts/AuthContext";
 
 const UserProfileScreen = () => {
@@ -21,7 +27,7 @@ const UserProfileScreen = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [profileImage, setProfileImage] = useState(null); 
+  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
     if (!userId) {
@@ -36,7 +42,7 @@ const UserProfileScreen = () => {
         setUsername(data.username);
       }
       if (data && data.skinType) {
-        setProfileImage(data.profileImage)
+        setProfileImage(data.profileImage);
       }
     };
     fetchUserData();
@@ -84,7 +90,7 @@ const UserProfileScreen = () => {
       }
 
       const currentData = await getUserData(userId);
-      
+
       if (!currentData) {
         alert("Nie znaleziono danych użytkownika");
         return;
@@ -113,81 +119,89 @@ const UserProfileScreen = () => {
       aspect: [1, 1],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
       if (result.assets && result.assets.length > 0) {
         const selectedAsset = result.assets[0];
         setProfileImage(selectedAsset.uri);
-  
+
         try {
-          
-          await updateProfileImage(userId, selectedAsset)
+          await updateProfileImage(userId, selectedAsset);
         } catch (error) {
-          console.error('Error saving image URI to AsyncStorage:', error);
+          console.error("Err", error);
         }
       }
     }
   };
 
-
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={pickImage}>
+    <ScrollView>
+      <View style={styles.container}>
         <View style={styles.profileImageContainer}>
           {profileImage ? (
-            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+            <TouchableOpacity onPress={pickImage}>
+              <Image
+                source={{ uri: profileImage }}
+                style={styles.profileImage}
+              />
+            </TouchableOpacity>
           ) : (
-            <Text>Dodaj zdjęcie</Text>
+            <TouchableOpacity onPress={pickImage}>
+              <View style={styles.profileImageContainerAdd}>
+                <Text style={styles.addPhoto}>Dodaj zdjęcie</Text>
+              </View>
+            </TouchableOpacity>
           )}
         </View>
-      </TouchableOpacity>
-      <Text style={styles.userTitle}> Użytkownik: {username}</Text>
-      <Text style={styles.header}>Edytuj profil</Text>
 
-      <TextInput
-        style={styles.input}
-        value={newUsername}
-        onChangeText={setNewUsername}
-        placeholder="Nowa nazwa użytkownika"
-      />
-      <Button
-        title="Zmień nazwe użytkownika"
-        onPress={updateUsername}
-        color="#007bff"
-      />
+        <Text style={styles.userTitle}> Użytkownik: {username}</Text>
+        <Text style={styles.header}>Edytuj profil</Text>
 
-      <Text style={styles.sectionHeader}>Zmiana hasła</Text>
-      <TextInput
-        style={styles.input}
-        value={currentPassword}
-        onChangeText={setCurrentPassword}
-        secureTextEntry
-        placeholder="Aktualne hasło"
-      />
-      <TextInput
-        style={styles.input}
-        value={newPassword}
-        onChangeText={setNewPassword}
-        secureTextEntry
-        placeholder="Nowe hasło"
-      />
-      <Button
-        title="Zmień hasło"
-        onPress={handleChangePassword}
-        color="#28a745"
-      />
-      {user.skinType ? (
-        <View>
-          <Text
-            style={styles.skinSection}
-          >{`Typ skóry: ${user.skinType}`}</Text>
-        </View>
-      ) : (
-        <Text style={styles.skinSection}>
-          Musisz najpierw wypełnić test na typ skóry, aby otrzymać wynik.
-        </Text>
-      )}
-    </View>
+        <TextInput
+          style={styles.input}
+          value={newUsername}
+          onChangeText={setNewUsername}
+          placeholder="Nowa nazwa użytkownika"
+        />
+        <Button
+          title="Zmień nazwe użytkownika"
+          onPress={updateUsername}
+          color="#007bff"
+        />
+
+        <Text style={styles.sectionHeader}>Zmiana hasła</Text>
+        <TextInput
+          style={styles.input}
+          value={currentPassword}
+          onChangeText={setCurrentPassword}
+          secureTextEntry
+          placeholder="Aktualne hasło"
+        />
+        <TextInput
+          style={styles.input}
+          value={newPassword}
+          onChangeText={setNewPassword}
+          secureTextEntry
+          placeholder="Nowe hasło"
+        />
+        <Button
+          title="Zmień hasło"
+          onPress={handleChangePassword}
+          color="#28a745"
+        />
+        {user.skinType ? (
+          <View>
+            <Text
+              style={styles.skinSection}
+            >{`Typ skóry: ${user.skinType}`}</Text>
+          </View>
+        ) : (
+          <Text style={styles.skinSection}>
+            Musisz najpierw wypełnić test na typ skóry, aby otrzymać wynik.
+          </Text>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -196,6 +210,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#f5f5f5",
+  },
+
+  addPhoto: {
+    paddingTop: 60,
+    paddingLeft: 15,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
   },
   header: {
     fontSize: 24,
@@ -251,8 +273,17 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: 150,
     height: 150,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 20,
+  },
+  profileImageContainerAdd: {
+    borderRadius: 75,
+    overflow: "hidden",
+    width: 150,
+    height: 150,
+    alignSelf: "center",
+    marginBottom: 20,
+    backgroundColor: "black",
   },
   profileImage: {
     width: "100%",

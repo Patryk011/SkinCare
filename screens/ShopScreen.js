@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,10 @@ import {
   Linking,
 } from "react-native";
 import shopsData from "../utils/shopsData";
+import { AuthContext } from "../contexts/AuthContext";
 
 const ShopsScreen = () => {
+  const { user } = useContext(AuthContext);
   const openLink = (url) => {
     Linking.openURL(url).catch((err) =>
       console.error("An error occurred", err)
@@ -29,17 +31,38 @@ const ShopsScreen = () => {
     </View>
   );
 
-  return (
-    <FlatList
-      data={shopsData}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.listContainer}
-    />
-  );
+  if (user.skinType) {
+    return (
+      <FlatList
+        data={shopsData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
+      />
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          Wypełnij test na typ skóry, wyświetlimy wtedy tutaj liste polecanych
+          sklepów.
+        </Text>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  message: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
   listContainer: {
     padding: 10,
   },

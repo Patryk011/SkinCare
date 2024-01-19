@@ -50,7 +50,6 @@ const TestResultScreen = ({ route, navigation }) => {
       const calculatedResult = analyzeResult(route.params.answers);
       setResult(calculatedResult);
     }
-    console.log("wynik: " + result);
   }, [route.params?.answers]);
 
   if (user.skinType) {
