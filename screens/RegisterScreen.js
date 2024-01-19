@@ -12,6 +12,10 @@ const RegisterScreen = ({ navigation }) => {
       Alert.alert("Błąd", "Użytkownik już istnieje");
       return;
     }
+    if (username === "" || password === "") {
+      Alert.alert("Błąd", "Pola nie mogą być puste");
+      return;
+    }
 
     const result = await registerUser(username, password);
     if (result) {

@@ -17,6 +17,8 @@ import {
   updateProfileImage,
 } from "../data/api";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../contexts/AuthContext";
 
 const UserProfileScreen = () => {
@@ -32,17 +34,13 @@ const UserProfileScreen = () => {
   useEffect(() => {
     if (!userId) {
       console.error("Brak userId");
-      console.log(userId);
       return;
     }
     const fetchUserData = async () => {
       const data = await getUserData(userId);
-      console.log("UserData in UserProfileScreen:", data);
       if (data) {
         setUsername(data.username);
-      }
-      if (data && data.skinType) {
-        setProfileImage(data.profileImage);
+        loadImageUri(userId);
       }
     };
     fetchUserData();
@@ -112,6 +110,45 @@ const UserProfileScreen = () => {
     }
   };
 
+  const saveImage = async (imageUri) => {
+    const fileName = imageUri.split("/").pop();
+    const newPath = FileSystem.documentDirectory + fileName;
+    try {
+      await FileSystem.moveAsync({
+        from: imageUri,
+        to: newPath,
+      });
+      console.log("newPath" + newPath);
+      return newPath;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+
+  const storeImageUri = async (userId, imageUri) => {
+    try {
+      await AsyncStorage.setItem(`profileImage_${userId}`, imageUri);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const loadImageUri = async (userId) => {
+    try {
+      const savedImageUri = await AsyncStorage.getItem(
+        `profileImage_${userId}`
+      );
+      if (savedImageUri !== null) {
+        setProfileImage(savedImageUri);
+      } else {
+        setProfileImage(null);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -123,12 +160,15 @@ const UserProfileScreen = () => {
     if (!result.canceled) {
       if (result.assets && result.assets.length > 0) {
         const selectedAsset = result.assets[0];
-        setProfileImage(selectedAsset.uri);
-
-        try {
-          await updateProfileImage(userId, selectedAsset);
-        } catch (error) {
-          console.error("Err", error);
+        const savedUri = await saveImage(selectedAsset.uri);
+        if (savedUri) {
+          setProfileImage(savedUri);
+          await storeImageUri(userId, savedUri);
+          try {
+            await updateProfileImage(userId, selectedAsset);
+          } catch (error) {
+            console.error("Error", error);
+          }
         }
       }
     }
