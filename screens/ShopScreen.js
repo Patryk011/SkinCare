@@ -31,10 +31,14 @@ const ShopsScreen = () => {
     </View>
   );
 
+  const filteredShopsData = shopsData.filter((shop) => {
+    return shop.skinType.includes(user.skinType);
+  });
+
   if (user.skinType) {
     return (
       <FlatList
-        data={shopsData}
+        data={filteredShopsData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
