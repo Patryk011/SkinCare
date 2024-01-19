@@ -91,7 +91,8 @@ const NotebookScreen = ({ navigation, route }) => {
       setNotesList(
         notesList.map((note) => (note.id === noteId ? updatedNote : note))
       );
-  
+      setEditingNoteId(null);
+      setEditingText("");
     } catch (e) {
       console.error(e.message);
     }
@@ -141,13 +142,13 @@ const NotebookScreen = ({ navigation, route }) => {
           <Image source={{ uri: item.photo }} style={styles.imageStyle} />
           {isEditing ? (
             <TextInput
-              style={styles.inputEdit}
+              style={styles.photoEdit}
               onChangeText={setEditingText}
               value={editingText}
               placeholder="Add a description..."
             />
           ) : (
-            <Text style={styles.noteText}>{item.description || "No description"}</Text>
+            <Text style={styles.photoDesc}>{item.description || ""}</Text>
           )}
           <View style={styles.iconStyles}>
             {isEditing ? (
@@ -253,8 +254,8 @@ const styles = StyleSheet.create({
   },
 
   imageStyle: {
-    width: 150,
-    height: 150,
+    width: 125,
+    height: 125,
     marginRight: 10,
   },
   input: {
@@ -273,6 +274,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     maxWidth: '100%',
     flex: 5
+  },
+
+  photoEdit: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 10,
+    marginRight: 10,
+    paddingHorizontal: 10,
+    maxWidth: '100%',
+    flex: 3
+  },
+
+  photoDesc: {
+    maxWidth: '100%',
+    flex: 2,
+    fontSize: 16
   },
 });
 
