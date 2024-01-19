@@ -121,12 +121,15 @@ const NotebookScreen = ({ navigation, route }) => {
         <View style={styles.noteItem}>
           {editingNoteId === item.id ? (
             <TextInput
-              style={styles.input}
+              style={styles.inputEdit}
               onChangeText={setEditingText}
               value={editingText}
             />
           ) : (
-            <Text style={styles.noteText}>{`${item.date} ${item.text}`}</Text>
+            <View style={styles.noteContainer}>
+            <Text style={[styles.noteText, styles.noteDate]}>{`${item.date}`}</Text>
+            <Text style={styles.noteText}>{`${item.text}`}</Text>
+            </View>
           )}
           {editingNoteId === item.id ? (
             <View style={styles.iconStyles}>
@@ -183,9 +186,13 @@ const styles = StyleSheet.create({
 
   },
 
+  noteContainer: {
+    maxWidth: '100%',
+    flex: 5,
+  },
+
   noteText: {
     fontSize: 16,
-    flex: 5,
     maxWidth: '100%',
 
   },
@@ -194,6 +201,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-end",
+  },
+
+  noteDate: {
+    fontWeight: 'bold'
   },
 
   imageStyle: {
@@ -207,6 +218,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+
+  inputEdit: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    maxWidth: '100%',
+    flex: 5
   },
 });
 
