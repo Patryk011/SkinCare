@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { fetchNotes, saveNote, updateNote, deleteNote } from "../data/api";
+import { fetchNotes, saveNote, updateNote, deleteNote, updateNoteWithPhoto } from "../data/api";
 import { AuthContext } from "../contexts/AuthContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -34,6 +34,7 @@ const NotebookScreen = ({ navigation, route }) => {
     const createNoteWithPhoto = async (photoUri) => {
       const newNote = {
         photo: photoUri,
+        description: '',
       };
 
       try {
@@ -72,6 +73,31 @@ const NotebookScreen = ({ navigation, route }) => {
     setEditingText(text);
   };
 
+  const handleUpdatePhotoNote = async (noteId, newDescription) => {
+    try {
+      const currentNote = notesList.find((note) => note.id === noteId);
+      if (!currentNote.photo) {
+        console.error("No photo found for the note");
+        return;
+      }
+  
+      const updatedNoteData = {
+        ...currentNote,
+        description: newDescription,
+      };
+  
+      const updatedNote = await updateNoteWithPhoto(noteId, updatedNoteData);
+  
+      setNotesList(
+        notesList.map((note) => (note.id === noteId ? updatedNote : note))
+      );
+  
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+  
+
   const handleUpdateNote = async (noteId) => {
     try {
       const currentNote = notesList.find((note) => note.id === noteId);
@@ -105,21 +131,45 @@ const NotebookScreen = ({ navigation, route }) => {
   };
 
   const renderItem = ({ item }) => {
+    
+    const isEditing = editingNoteId === item.id;
+  
     if (item.photo) {
+      
       return (
         <View style={styles.noteItem}>
           <Image source={{ uri: item.photo }} style={styles.imageStyle} />
+          {isEditing ? (
+            <TextInput
+              style={styles.inputEdit}
+              onChangeText={setEditingText}
+              value={editingText}
+              placeholder="Add a description..."
+            />
+          ) : (
+            <Text style={styles.noteText}>{item.description || "No description"}</Text>
+          )}
           <View style={styles.iconStyles}>
+            {isEditing ? (
+              <TouchableOpacity onPress={() => handleUpdatePhotoNote(item.id, editingText)}>
+                <Icon name="check" size={24} color="green" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => handleEditNote(item.id, item.description)}>
+                <Icon name="edit" size={24} color="black" />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity onPress={() => handleDeleteNote(item.id)}>
-              <Icon name="close" size={40} color="red" />
+              <Icon name="close" size={24} color="red" />
             </TouchableOpacity>
           </View>
         </View>
       );
     } else {
+      
       return (
         <View style={styles.noteItem}>
-          {editingNoteId === item.id ? (
+          {isEditing ? (
             <TextInput
               style={styles.inputEdit}
               onChangeText={setEditingText}
@@ -127,33 +177,28 @@ const NotebookScreen = ({ navigation, route }) => {
             />
           ) : (
             <View style={styles.noteContainer}>
-            <Text style={[styles.noteText, styles.noteDate]}>{`${item.date}`}</Text>
-            <Text style={styles.noteText}>{`${item.text}`}</Text>
+              <Text style={[styles.noteText, styles.noteDate]}>{item.date}</Text>
+              <Text style={styles.noteText}>{item.text}</Text>
             </View>
           )}
-          {editingNoteId === item.id ? (
-            <View style={styles.iconStyles}>
+          <View style={styles.iconStyles}>
+            {isEditing ? (
               <TouchableOpacity onPress={() => handleUpdateNote(item.id)}>
                 <Icon name="check" size={24} color="green" />
               </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.iconStyles}>
-              <TouchableOpacity
-                onPress={() => handleEditNote(item.id, item.text)}
-              >
-                <Icon name="edit" size={24} color="blue" />
+            ) : (
+              <TouchableOpacity onPress={() => handleEditNote(item.id, item.text)}>
+                <Icon name="edit" size={24} color="black" />
               </TouchableOpacity>
-            </View>
-          )}
-
-          <TouchableOpacity onPress={() => handleDeleteNote(item.id)}>
-            <Icon name="close" size={24} color="red" />
-          </TouchableOpacity>
+            )}
+            <TouchableOpacity onPress={() => handleDeleteNote(item.id)}>
+              <Icon name="close" size={24} color="red" />
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
-  };
+  }
   return (
     <View style={styles.container}>
       <TextInput

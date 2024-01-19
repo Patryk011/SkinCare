@@ -94,20 +94,22 @@ export const saveNote = async (userId, note) => {
   }
 };
 
-export const updateNoteWithPhoto = async (userId, noteId, photoUrl) => {
+export const updateNoteWithPhoto = async (noteId, updatedNoteData) => {
   try {
-    const response = await fetch(`${API_URL}/users/${userId}/notes/${noteId}`, {
+    const response = await fetch(`${API_URL}/notes/${noteId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ photo: photoUrl }),
+      body: JSON.stringify(updatedNoteData),
     });
     return response.json();
   } catch (error) {
     console.error("Error during updating note:", error);
   }
 };
+
+
 
 export const updateNote = async (noteId, updatedNote) => {
   try {
