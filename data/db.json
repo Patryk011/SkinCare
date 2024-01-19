@@ -1,10 +1,4 @@
 {
-  "users": [
-    {
-      "username": "a",
-      "password": "a",
-      "id": 1
-    }
-  ],
+  "users": [],
   "notes": []
 }

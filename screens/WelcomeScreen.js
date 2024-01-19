@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 
 const WelcomeScreen = ({ navigation }) => {
@@ -7,6 +7,7 @@ const WelcomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image source={require("../assets/logo.png")} style={styles.image} />
       <Text style={styles.title}>
         Witaj, zarejestruj się lub jeśli masz konto zaloguj.
       </Text>
@@ -49,6 +50,11 @@ const styles = StyleSheet.create({
     width: "80%",
     borderRadius: 20,
     overflow: "hidden",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    marginBottom: 80,
   },
 });
 
