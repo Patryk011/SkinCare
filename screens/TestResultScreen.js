@@ -123,7 +123,7 @@ const TestResultScreen = ({ route, navigation }) => {
     );
   }
 
-  if (!route.params?.answers || !user.skinType) {
+  if (!route.params?.answers) {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>
